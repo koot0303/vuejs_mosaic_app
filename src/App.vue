@@ -23,6 +23,8 @@
     
     <!-- ダウンロードボタン (常に表示、画像未セット時には無効化) -->
     <button :disabled="!originalImage" @click="downloadImage">画像をダウンロード</button>
+
+    <!-- GitHubリンク -->
     <p id="GitHubURL" ><a href="https://github.com/koot0303/vuejs_mosaic_app">GitHub</a></p>
   </div>
 </template>
@@ -36,6 +38,8 @@ export default {
     };
   },
   methods: {
+
+    // 画像アップロード時の処理
     handleImageUpload(event) {
       const file = event.target.files[0];
       if (!file) return;
@@ -57,6 +61,7 @@ export default {
       reader.readAsDataURL(file);
     },
 
+    // モザイクフィルタを適用
     applyMosaic() {
       if (!this.originalImage) return;
 
@@ -92,9 +97,11 @@ export default {
         }
       }
 
+      // モザイクフィルタを適用した画像データを描画
       ctx.putImageData(imageData, 0, 0);
     },
 
+    // 画像をダウンロード
     downloadImage() {
       const canvas = this.$refs.canvas;
       const link = document.createElement("a");
