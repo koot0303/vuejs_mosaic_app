@@ -12,6 +12,7 @@
         type="range"
         min="5"
         max="100"
+        step="5"
         v-model="blockSize"
         @input="applyMosaic"
       />
