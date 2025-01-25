@@ -11,7 +11,7 @@
         id="mosaic-slider"
         type="range"
         min="5"
-        max="50"
+        max="100"
         v-model="blockSize"
         @input="applyMosaic"
       />
@@ -20,8 +20,8 @@
     <!-- プレビューキャンバス -->
     <canvas ref="canvas" style="max-width: 100%;"></canvas>
     
-    <!-- ダウンロードボタン -->
-    <button v-if="originalImage" @click="downloadImage">画像をダウンロード</button>
+    <!-- ダウンロードボタン (常に表示、画像未セット時には無効化) -->
+    <button :disabled="!originalImage" @click="downloadImage">画像をダウンロード</button>
   </div>
 </template>
 
@@ -29,12 +29,11 @@
 export default {
   data() {
     return {
-      originalImage: null, // 元画像オブジェクト
-      blockSize: 10,       // 初期モザイク強度
+      originalImage: null, // アップロードされた画像データ
+      blockSize: 10,       // モザイク強度（初期値10）
     };
   },
   methods: {
-    // 画像ファイルのアップロード
     handleImageUpload(event) {
       const file = event.target.files[0];
       if (!file) return;
@@ -45,12 +44,10 @@ export default {
         img.onload = () => {
           this.originalImage = img;
 
-          // キャンバスの設定
           const canvas = this.$refs.canvas;
           canvas.width = img.width;
           canvas.height = img.height;
 
-          // 元画像を描画
           this.applyMosaic();
         };
         img.src = e.target.result;
@@ -58,39 +55,30 @@ export default {
       reader.readAsDataURL(file);
     },
 
-    // モザイクを適用
     applyMosaic() {
       if (!this.originalImage) return;
 
       const canvas = this.$refs.canvas;
       const ctx = canvas.getContext("2d");
 
-      // 元画像を再描画
       ctx.drawImage(this.originalImage, 0, 0, canvas.width, canvas.height);
 
-      // 画像データを取得
       const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
       const data = imageData.data;
 
-      // モザイク強度（ブロックサイズ）
       const blockSize = parseInt(this.blockSize);
 
-      // モザイク処理
       for (let y = 0; y < canvas.height; y += blockSize) {
         for (let x = 0; x < canvas.width; x += blockSize) {
-          // ブロックの左上のピクセルの色を取得
           const i = (y * canvas.width + x) * 4;
           const red = data[i];
           const green = data[i + 1];
           const blue = data[i + 2];
 
-          // ブロック内のピクセルを同じ色に設定
           for (let dy = 0; dy < blockSize; dy++) {
             for (let dx = 0; dx < blockSize; dx++) {
               const nx = x + dx;
               const ny = y + dy;
-
-              // キャンバスの範囲外に出ないように制限
               if (nx < canvas.width && ny < canvas.height) {
                 const j = (ny * canvas.width + nx) * 4;
                 data[j] = red;
@@ -102,11 +90,9 @@ export default {
         }
       }
 
-      // キャンバスに更新
       ctx.putImageData(imageData, 0, 0);
     },
 
-    // 加工した画像をダウンロード
     downloadImage() {
       const canvas = this.$refs.canvas;
       const link = document.createElement("a");
@@ -135,6 +121,11 @@ button {
   padding: 10px 20px;
   font-size: 16px;
   cursor: pointer;
+}
+
+button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
 }
 
 #mosaic-slider {
