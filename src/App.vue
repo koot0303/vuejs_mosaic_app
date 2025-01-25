@@ -105,31 +105,122 @@ export default {
 </script>
 
 <style>
+body {
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  background: linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%);
+  color: #333;
+  line-height: 1.6;
+}
+
 .app {
-  text-align: center;
-  margin: 20px;
+  max-width: 800px;
+  margin: 40px auto;
+  padding: 30px;
+  background-color: white;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+}
+
+.title {
+  font-size: 2.5em;
+  color: #2c2c2c;
+  margin-bottom: 30px;
+  font-weight: 300;
+  letter-spacing: -1px;
+}
+
+input[type="file"] {
+  border: 2px dashed #ccc;
+  border-radius: 4px;
+  padding: 20px;
+  width: calc(100% - 44px);
+  margin-bottom: 20px;
+  transition: all 0.3s ease;
+}
+
+input[type="file"]:hover {
+  border-color: #999;
+}
+
+label {
+  display: block;
+  margin-bottom: 10px;
+  font-weight: 500;
+  color: #555;
+}
+
+#mosaic-slider {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 6px;
+  border-radius: 3px;
+  background: #d7dcdf;
+  outline: none;
+  margin: 20px 0 30px;
+}
+
+#mosaic-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #4a4a4a;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+
+#mosaic-slider::-webkit-slider-thumb:hover {
+  background: #2c2c2c;
+  box-shadow: 0 0 0 8px rgba(74, 74, 74, 0.1);
+}
+
+#mosaic-slider::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #4a4a4a;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+  border: none;
+}
+
+#mosaic-slider::-moz-range-thumb:hover {
+  background: #2c2c2c;
+  box-shadow: 0 0 0 8px rgba(74, 74, 74, 0.1);
 }
 
 canvas {
   display: block;
-  margin: 20px auto;
-  border: 1px solid #ccc;
+  margin: 30px auto;
+  border: none;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+  max-width: 100%;
+  height: auto;
 }
 
 button {
-  margin-top: 10px;
-  padding: 10px 20px;
+  background-color: #4a4a4a;
+  color: white;
+  border: none;
+  padding: 12px 24px;
   font-size: 16px;
   cursor: pointer;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+  margin-top: 20px;
+}
+
+button:hover:not(:disabled) {
+  background-color: #2c2c2c;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 button:disabled {
   background-color: #ccc;
   cursor: not-allowed;
-}
-
-#mosaic-slider {
-  margin: 20px 0;
-  width: 80%;
+  transform: none;
+  box-shadow: none;
 }
 </style>
