@@ -151,6 +151,7 @@ label {
 
 #mosaic-slider {
   -webkit-appearance: none;
+  appearance: none;
   width: 100%;
   height: 6px;
   border-radius: 3px;
